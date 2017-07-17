@@ -79,28 +79,34 @@
             Library.octagon(element);
         }
 
-        Library.animate = function(element, e, time=500) {
+        Library.animate = function(element, e, time=600) {
             
             if(typeof(element) !== 'object')
                 element = document.querySelector(element);
-
-            var iterations = (time/1000) * 100; // 100 fps
+            var FPS = 150;
+            var iterations = (time/1000) * FPS; // 100 fps
             var delay = time/iterations;
 
             var from = parseInt(element.dataset.edge);
             var span = e - from;
             var stepSize = span / iterations;
 
-            var i = 0;
+            var i = 1;
             var interval = setInterval(func, delay);
 
             function func(){
                 if(i >= iterations)
                     clearInterval(interval);
                 
-                Library.redrawOctagon(element, from + i*stepSize);
+                Library.redrawOctagon(element, from + Library.sigmoid(i+1, iterations)*span );
                 ++i;                
             }
+        }
+
+        Library.sigmoid = function(i, total){
+            var x = -7 + ((i)/total)*20;
+
+            return 1/(1+Math.exp(-0.5*x));
         }
 
         Library.stringifyPoints = function(points){
