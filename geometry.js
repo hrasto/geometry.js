@@ -14,12 +14,14 @@
 
             if(typeof(element) !== 'object')
                 element = document.querySelector(element);
-        
+            if(typeof(element) !== 'object')
+                throw "invalid element or element selector specified";
+
             var e = parseInt(element.dataset.edge);
             var w = parseInt(element.dataset.width);
 
             if(typeof(e) !== 'undefined' && typeof(w) !== 'undefined'){
-                if( w > e*(1+Math.SQRT2) ){
+                if(true || w > e*(1+Math.SQRT2) ){
                     element.style.width = w;
                     element.style.height = w;
 
@@ -46,32 +48,32 @@
                             element.children[1].setAttributeNS(null, "points", Library.stringifyPoints(Library.rotatePoints(polygonT, -Math.PI/2, w/2)));
                             element.children[2].setAttributeNS(null, "points", Library.stringifyPoints(Library.rotatePoints(polygonT, -Math.PI, w/2)));
                             element.children[3].setAttributeNS(null, "points", Library.stringifyPoints(Library.rotatePoints(polygonT, -3*Math.PI/2, w/2)));
-                            
+
                             element.children[4].setAttributeNS(null, "points", Library.stringifyPoints(polygonS));
                             element.children[5].setAttributeNS(null, "points", Library.stringifyPoints(Library.rotatePoints(polygonS, -Math.PI/2, w/2)));
                             element.children[6].setAttributeNS(null, "points", Library.stringifyPoints(Library.rotatePoints(polygonS, -Math.PI, w/2)));
                             element.children[7].setAttributeNS(null, "points", Library.stringifyPoints(Library.rotatePoints(polygonS, -3*Math.PI/2, w/2)));
                         //}
-                        
-                    }else{
-                        Library.drawPolygon(element, polygonT, "#49ff98");
-                        Library.drawPolygon(element, Library.rotatePoints(polygonT, -Math.PI/2, w/2), "#ff4949");
-                        Library.drawPolygon(element, Library.rotatePoints(polygonT, -Math.PI, w/2), "#ff9c63");
-                        Library.drawPolygon(element, Library.rotatePoints(polygonT, -3*Math.PI/2, w/2), "#ffea62");
 
-                        Library.drawPolygon(element, polygonS, "#7af9ef");
-                        Library.drawPolygon(element, Library.rotatePoints(polygonS, -Math.PI/2, w/2),"#c0f24b");
-                        Library.drawPolygon(element, Library.rotatePoints(polygonS, -Math.PI, w/2), "#f766ff");
-                        Library.drawPolygon(element, Library.rotatePoints(polygonS, -3*Math.PI/2, w/2), "#b775ff");
+                    }else{
+                        Library.drawPolygon(element, polygonT, "#222");
+                        Library.drawPolygon(element, Library.rotatePoints(polygonT, -Math.PI/2, w/2), "#222");
+                        Library.drawPolygon(element, Library.rotatePoints(polygonT, -Math.PI, w/2), "#222");
+                        Library.drawPolygon(element, Library.rotatePoints(polygonT, -3*Math.PI/2, w/2), "#222");
+
+                        Library.drawPolygon(element, polygonS, "#555");
+                        Library.drawPolygon(element, Library.rotatePoints(polygonS, -Math.PI/2, w/2),"#555");
+                        Library.drawPolygon(element, Library.rotatePoints(polygonS, -Math.PI, w/2), "#555");
+                        Library.drawPolygon(element, Library.rotatePoints(polygonS, -3*Math.PI/2, w/2), "#555");
                     }
 
                 }else{
-                    console.log('data-width must be greater than data-edge*(1+sqrt(2))');                    
+                    console.log('data-width must be greater than data-edge*(1+sqrt(2))');
                 }
             }else{
                 console.log('data-width and data-edge must be defined');
             }
-            
+            return element;
         }
 
         Library.redrawOctagon = function(element, e){
@@ -80,7 +82,7 @@
         }
 
         Library.animate = function(element, e, time=600) {
-            
+
             if(typeof(element) !== 'object')
                 element = document.querySelector(element);
             var FPS = 150;
@@ -97,9 +99,9 @@
             function func(){
                 if(i >= iterations)
                     clearInterval(interval);
-                
+
                 Library.redrawOctagon(element, from + Library.sigmoid(i+1, iterations)*span );
-                ++i;                
+                ++i;
             }
         }
 
@@ -123,7 +125,7 @@
             var svgns = "http://www.w3.org/2000/svg";
             var shape = document.createElementNS(svgns, "polygon");
             shape.setAttributeNS(null, "points", pointsStr);
-            shape.setAttributeNS(null, "style", "fill:"+color); 
+            shape.setAttributeNS(null, "style", "fill:"+color);
             element.appendChild(shape);
         }
 
